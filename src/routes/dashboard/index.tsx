@@ -27,28 +27,23 @@ function DashboardView() {
             <div className="rounded-full bg-emerald-500/10 p-2">
               <Bitcoin className="h-6 w-6 text-[#00FFA3]" />
             </div>
-            <h1 className="text-xl font-bold text-slate-100">Von-Exchange</h1>
+            <h4 className="font-bold text-slate-100">Von-Exchange</h4>
           </div>
           <Button
             onClick={logout}
             size="sm"
-            style={{
-              backgroundColor: '#00FFA3',
-              color: '#000',
-              fontWeight: 500,
-            }}
-            className="hover:bg-[#00FFA3]/90"
+            variant="ghost"
+            className="text-slate-400 hover:text-slate-100"
           >
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
+            <LogOut className="h-5 w-5" />
           </Button>
         </div>
       </nav>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 space-y-4 sm:flex sm:items-center sm:justify-between sm:space-y-0">
           <div>
-            <h1 className="text-2xl font-bold text-slate-100">Hi, {displayName}! 👋</h1>
+            <h4 className="font-bold text-slate-100">Hi, {displayName}! 👋</h4>
             <p className="text-slate-400">Welcome back to your dashboard</p>
           </div>
           <Button
@@ -58,7 +53,7 @@ function DashboardView() {
               color: '#000',
               fontWeight: 500,
             }}
-            className="hover:bg-[#00FFA3]/90"
+            className="w-full sm:w-auto hover:bg-[#00FFA3]/90"
             onClick={() => {
               const createTransactionForm = document.querySelector('.create-transaction-form')
               if (createTransactionForm) {
