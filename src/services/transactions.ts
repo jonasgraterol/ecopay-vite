@@ -9,6 +9,7 @@ export interface Transaction {
   userId: number;
   paymentMethodId: number;
   walletAddress: string;
+  network: string;
   cryptoCurrency: string;
   cryptoAmount: number;
   blockchainTransactionId: number;

@@ -14,7 +14,7 @@ export function TransactionList() {
 
   if (isLoading) {
     return (
-      <Card className="border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
+      <Card className="transaction-list border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
         <CardHeader>
           <CardTitle className="text-xl font-semibold text-slate-100">Transaction History</CardTitle>
           <CardDescription className="text-slate-400">Loading transactions...</CardDescription>
@@ -25,7 +25,7 @@ export function TransactionList() {
 
   if (error) {
     return (
-      <Card className="border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
+      <Card className="transaction-list border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
         <CardHeader>
           <CardTitle className="text-xl font-semibold text-slate-100">Transaction History</CardTitle>
           <CardDescription className="text-slate-400 text-red-400">Error loading transactions</CardDescription>
@@ -37,7 +37,7 @@ export function TransactionList() {
   const transactions = transactionData?.data || [];
 
   return (
-    <Card className="border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
+    <Card className="transaction-list border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
       <CardHeader>
         <CardTitle className="text-xl font-semibold text-slate-100">Transaction History</CardTitle>
         <CardDescription className="text-slate-400">Your recent transactions</CardDescription>

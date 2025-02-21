@@ -22,7 +22,7 @@ function LandingPage() {
             Buy USDT Instantly
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-slate-300 mb-8">
-            Fast, secure, and easy way to purchase USDT using TTC. Get started in minutes.
+            Fast, secure, and easy way to purchase USDT using Fiat. Get started in minutes.
           </p>
           <div className="flex justify-center gap-4">
             <Link to="/auth/login">

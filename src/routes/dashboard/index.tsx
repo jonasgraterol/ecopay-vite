@@ -27,7 +27,7 @@ function DashboardView() {
             <div className="rounded-full bg-emerald-500/10 p-2">
               <Bitcoin className="h-6 w-6 text-[#00FFA3]" />
             </div>
-            <h1 className="text-xl font-bold text-slate-100">EcoPay</h1>
+            <h1 className="text-xl font-bold text-slate-100">Von-Exchange</h1>
           </div>
           <Button
             onClick={logout}

@@ -50,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await authService.signIn({ email, password });
       if (response.accessToken) {
         localStorage.setItem('feathers-jwt', response.accessToken);
+        localStorage.setItem('feathers-user', JSON.stringify(response.user));
       }
       setUser(response.user);
       setIsAuthenticated(true);
@@ -58,6 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Only reset auth state if the token is invalid
       if (error instanceof Error && error.message.includes('401')) {
         localStorage.removeItem('feathers-jwt');
+        localStorage.removeItem('feathers-user');
         setUser(null);
         setIsAuthenticated(false);
       }
@@ -67,23 +69,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = useCallback(async (data: RegisterData) => {
     try {
-      const user = await authService.signUp({
+      await authService.signUp({
         email: data.email,
         password: data.password,
         name: data.name || '',
         phone: data.phone || '',
       });
-      setUser(user);
-      setIsAuthenticated(true);
-      login(data.email, data.password);
+      // Don't set user here, let the login handle it
+      await login(data.email, data.password);
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
     }
-  }, []);
+  }, [login]);
 
   const logout = useCallback(() => {
     localStorage.removeItem('feathers-jwt');
+    localStorage.removeItem('feathers-user');
     setIsAuthenticated(false);
     setUser(null);
     router.navigate({ to: '/auth/login' });
