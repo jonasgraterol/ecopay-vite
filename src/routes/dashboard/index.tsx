@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useAuth } from '@/lib/auth/auth-context'
-import { Bitcoin, LogOut } from 'lucide-react'
+import { Bitcoin, LogOut, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TransactionList } from '@/components/dashboard/TransactionList'
 import { PaymentMethods } from '@/components/dashboard/PaymentMethods'
@@ -51,7 +51,7 @@ function DashboardView() {
             <h1 className="text-2xl font-bold text-slate-100">Hi, {displayName}! 👋</h1>
             <p className="text-slate-400">Welcome back to your dashboard</p>
           </div>
-          {/* <Button
+          <Button
             size="lg"
             style={{
               backgroundColor: '#00FFA3',
@@ -59,10 +59,16 @@ function DashboardView() {
               fontWeight: 500,
             }}
             className="hover:bg-[#00FFA3]/90"
+            onClick={() => {
+              const createTransactionForm = document.querySelector('.create-transaction-form')
+              if (createTransactionForm) {
+                createTransactionForm.scrollIntoView({ behavior: 'smooth' })
+              }
+            }}
           >
             <Plus className="mr-2 h-4 w-4" />
             New Transaction
-          </Button> */}
+          </Button>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">

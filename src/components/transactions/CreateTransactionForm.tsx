@@ -145,7 +145,7 @@ export function CreateTransactionForm({
         </DialogContent>
       </Dialog>
 
-      <Card className="mx-auto max-w-2xl border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
+      <Card className="create-transaction-form mx-auto max-w-2xl border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
         <CardHeader>
           <CardTitle className="text-slate-100">Create Transaction</CardTitle>
           <CardDescription className="text-slate-400">
