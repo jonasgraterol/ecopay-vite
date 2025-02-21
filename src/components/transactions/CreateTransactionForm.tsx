@@ -83,9 +83,9 @@ export function CreateTransactionForm({
       }
 
       // Reset form
-      e.currentTarget.reset()
-      setPaymentMethodId('')
-      setCurrency('TTD')
+      // e.currentTarget.reset()
+      // setPaymentMethodId('')
+      // setCurrency('TTD')
 
     } catch (error: any) {
       console.error('Error creating transaction:', error)

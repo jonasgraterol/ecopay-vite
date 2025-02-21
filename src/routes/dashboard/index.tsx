@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { TransactionList } from '@/components/dashboard/TransactionList'
 import { PaymentMethods } from '@/components/dashboard/PaymentMethods'
 import { CreateTransactionForm } from '@/components/transactions/CreateTransactionForm'
+import { Navigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/')({
   component: DashboardView,
@@ -12,6 +13,9 @@ export const Route = createFileRoute('/dashboard/')({
 
 function DashboardView() {
   const { logout, user } = useAuth()
+  if(!user) {
+    return <Navigate to="/auth/login" />
+  }
 
   const displayName = user?.name || user?.email || 'User'
 
@@ -47,7 +51,7 @@ function DashboardView() {
             <h1 className="text-2xl font-bold text-slate-100">Hi, {displayName}! 👋</h1>
             <p className="text-slate-400">Welcome back to your dashboard</p>
           </div>
-          <Button
+          {/* <Button
             size="lg"
             style={{
               backgroundColor: '#00FFA3',
@@ -58,7 +62,7 @@ function DashboardView() {
           >
             <Plus className="mr-2 h-4 w-4" />
             New Transaction
-          </Button>
+          </Button> */}
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">

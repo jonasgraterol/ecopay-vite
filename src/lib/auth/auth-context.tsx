@@ -26,18 +26,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Check for existing authentication on mount
   useEffect(() => {
     const token = localStorage.getItem('feathers-jwt');
-    if (token) {
-      authService.getCurrentUser()
-        .then(user => {
-          setUser(user);
-          setIsAuthenticated(true);
-        })
-        .catch(() => {
-          localStorage.removeItem('feathers-jwt');
-          setIsAuthenticated(false);
-          setUser(null);
-        });
+    const user = localStorage.getItem('feathers-user');
+    if (token && user) {
+      setUser(JSON.parse(user));
+      setIsAuthenticated(true);
     }
+    // if (token) {
+    //   authService.getCurrentUser()
+    //     .then(user => {
+    //       setUser(user);
+    //       setIsAuthenticated(true);
+    //     })
+    //     .catch(() => {
+    //       localStorage.removeItem('feathers-jwt');
+    //       setIsAuthenticated(false);
+    //       setUser(null);
+    //     });
+    // }
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
