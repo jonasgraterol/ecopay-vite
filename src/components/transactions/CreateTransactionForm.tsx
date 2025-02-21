@@ -3,15 +3,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ReactNode } from "react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ReactNode, useState } from "react"
 
 interface CreateTransactionFormProps {
   description?: ReactNode
   showFeatures?: boolean
   onSubmit?: (data: {
-    email: string
     walletAddress: string
     amount: string
+    currency: string
   }) => void
 }
 
@@ -20,15 +21,17 @@ export function CreateTransactionForm({
   showFeatures = true,
   onSubmit 
 }: CreateTransactionFormProps) {
+  const [currency, setCurrency] = useState('TTD')
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     
     if (onSubmit) {
       onSubmit({
-        email: formData.get('email') as string,
         walletAddress: formData.get('walletAddress') as string,
-        amount: formData.get('amount') as string
+        amount: formData.get('amount') as string,
+        currency: currency
       })
     }
   }
@@ -44,20 +47,6 @@ export function CreateTransactionForm({
       <CardContent>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email" className="text-slate-200">
-                Email
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                placeholder="you@example.com"
-                type="email"
-                className="border-slate-800 bg-slate-950 text-slate-200 placeholder:text-slate-500"
-                required
-              />
-            </div>
-
             <div className="grid gap-2">
               <Label htmlFor="walletAddress" className="text-slate-200">
                 USDT Wallet Address
@@ -87,9 +76,15 @@ export function CreateTransactionForm({
                     required
                   />
                 </div>
-                <div className="flex items-center rounded-md border border-slate-800 bg-slate-950 px-3 text-slate-200">
-                  TTD
-                </div>
+                <Select value={currency} onValueChange={setCurrency}>
+                  <SelectTrigger className="border-slate-800 bg-slate-950 text-slate-200">
+                    <SelectValue placeholder="Select currency" />
+                  </SelectTrigger>
+                  <SelectContent className="border-slate-800 bg-slate-950 text-slate-200">
+                    <SelectItem value="TTD">TTD</SelectItem>
+                    <SelectItem value="USD">USD</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <p className="text-sm text-slate-400">You will receive USDT at the current market rate</p>
             </div>
@@ -115,7 +110,12 @@ export function CreateTransactionForm({
 
             <Button 
               type="submit"
-              className="w-full bg-emerald-500 text-white hover:bg-emerald-600"
+              style={{
+                backgroundColor: '#00FFA3',
+                color: '#000',
+                fontWeight: 500,
+              }}
+              className="w-full bg-emerald-500 text-white hover:bg-[#00FFA3]/90"
             >
               Create Transaction
             </Button>
