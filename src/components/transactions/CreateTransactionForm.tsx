@@ -63,7 +63,7 @@ export function CreateTransactionForm({
       }
 
       // Create transaction
-      const result = await createTransaction.mutateAsync({
+      await createTransaction.mutateAsync({
         amount,
         userId: user.id,
         paymentMethodId: Number(paymentMethodId),

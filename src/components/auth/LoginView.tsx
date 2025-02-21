@@ -25,7 +25,7 @@ export function LoginView() {
       let errorMessage = 'An error occurred during sign in';
       
       if (err instanceof Error) {
-        if (err.response?.status === 401 || err.message.includes('401')) {
+        if (err.message.includes('401')) {
           errorMessage = 'Invalid email or password';
         } else {
           errorMessage = err.message;

@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useAuth } from '@/lib/auth/auth-context'
-import { Bitcoin, LogOut, Plus } from 'lucide-react'
+import { Bitcoin, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TransactionList } from '@/components/dashboard/TransactionList'
 import { PaymentMethods } from '@/components/dashboard/PaymentMethods'
