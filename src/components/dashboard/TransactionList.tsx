@@ -1,43 +1,38 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react"
-
-interface Transaction {
-  id: string
-  type: 'Buy' | 'Sell'
-  amount: number
-  usdt: number
-  status: 'Completed' | 'Pending'
-  date: string
-}
-
-const mockTransactions: Transaction[] = [
-  {
-    id: '1',
-    type: 'Buy',
-    amount: 1000.00,
-    usdt: 950.25,
-    status: 'Completed',
-    date: '2/19/2024'
-  },
-  {
-    id: '2',
-    type: 'Buy',
-    amount: 500.00,
-    usdt: 475.50,
-    status: 'Pending',
-    date: '2/18/2024'
-  },
-  {
-    id: '3',
-    type: 'Buy',
-    amount: 2000.00,
-    usdt: 1900.75,
-    status: 'Completed',
-    date: '2/17/2024'
-  }
-]
+import { useTransactions } from "@/hooks/use-transactions"
+import { Transaction } from "@/services/transactions";
+import { format } from "date-fns"
 
 export function TransactionList() {
+  const { data: transactionData, isLoading, error } = useTransactions({
+    $sort: { date: -1 },
+    $limit: 10
+  });
+
+  if (isLoading) {
+    return (
+      <Card className="border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold text-slate-100">Transaction History</CardTitle>
+          <CardDescription className="text-slate-400">Loading transactions...</CardDescription>
+        </CardHeader>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold text-slate-100">Transaction History</CardTitle>
+          <CardDescription className="text-slate-400 text-red-400">Error loading transactions</CardDescription>
+        </CardHeader>
+      </Card>
+    );
+  }
+
+  const transactions = transactionData?.data || [];
+
   return (
     <Card className="border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
       <CardHeader>
@@ -57,9 +52,9 @@ export function TransactionList() {
               </tr>
             </thead>
             <tbody className="text-slate-200">
-              {mockTransactions.map((transaction) => (
+              {transactions.map((transaction: Transaction) => (
                 <tr key={transaction.id} className="border-t border-slate-800">
-                  <td className="py-4">{transaction.date}</td>
+                  <td className="py-4">{format(new Date(transaction.date), 'M/d/yyyy')}</td>
                   <td>{transaction.type}</td>
                   <td className="text-right">{transaction.amount.toFixed(2)}</td>
                   <td className="text-right">{transaction.usdt.toFixed(2)}</td>
