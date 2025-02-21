@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useAuth } from '@/lib/auth/auth-context'
-import { Bitcoin, LogOut, Plus } from 'lucide-react'
+import { LogOut, Plus } from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
 import { TransactionList } from '@/components/dashboard/TransactionList'
 import { PaymentMethods } from '@/components/dashboard/PaymentMethods'
@@ -24,9 +25,7 @@ function DashboardView() {
       <nav className="border-b border-slate-800 bg-slate-900/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <div className="rounded-full bg-emerald-500/10 p-2">
-              <Bitcoin className="h-6 w-6 text-[#00FFA3]" />
-            </div>
+            <Logo size="xxs" />
             <h4 className="font-bold text-slate-100">Von-Exchange</h4>
           </div>
           <Button

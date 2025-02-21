@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Bitcoin, Shield, Timer, CreditCard, DollarSign } from "lucide-react"
+import { Shield, Timer, CreditCard, DollarSign } from "lucide-react"
+import { Logo } from "@/components/ui/logo"
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 
@@ -14,9 +15,7 @@ function LandingPage() {
       <section className="w-full px-4 py-20">
         <div className="mb-20 text-center">
           <div className="mb-8 flex justify-center">
-            <div className="rounded-full bg-emerald-500/10 p-4">
-              <Bitcoin className="h-8 w-8 text-emerald-400" />
-            </div>
+            <Logo size="sm" />
           </div>
           <h1 className="mb-6 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-4xl font-bold text-transparent sm:text-6xl">
             Buy USDT Instantly

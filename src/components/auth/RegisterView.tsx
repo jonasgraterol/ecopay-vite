@@ -3,7 +3,7 @@ import { useAuth } from '@/lib/auth/auth-context'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Bitcoin } from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
 import { Link } from '@tanstack/react-router'
 
 export function RegisterView() {
@@ -49,9 +49,7 @@ export function RegisterView() {
     <div className="min-h-screen w-full bg-gradient-to-b from-slate-950 to-black text-white">
       <div className="container mx-auto px-4 py-20 flex flex-col items-center">
         <Link to="/" className="mb-8">
-          <div className="rounded-full bg-emerald-500/10 p-4">
-            <Bitcoin className="h-8 w-8 text-[#00FFA3]" />
-          </div>
+          <Logo size="sm" />
         </Link>
 
         <Card className="w-full max-w-md border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
