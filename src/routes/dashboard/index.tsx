@@ -11,7 +11,9 @@ export const Route = createFileRoute('/dashboard/')({
 })
 
 function DashboardView() {
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
+
+  const displayName = user?.name || user?.email || 'User'
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-slate-950 to-black text-white">
@@ -21,7 +23,7 @@ function DashboardView() {
             <div className="rounded-full bg-emerald-500/10 p-2">
               <Bitcoin className="h-6 w-6 text-[#00FFA3]" />
             </div>
-            <h1 className="text-xl font-bold text-slate-100">ECOPAY</h1>
+            <h1 className="text-xl font-bold text-slate-100">EcoPay</h1>
           </div>
           <Button
             onClick={logout}
@@ -42,8 +44,8 @@ function DashboardView() {
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-slate-100">Dashboard</h1>
-            <p className="text-slate-400">Manage your transactions and payment methods</p>
+            <h1 className="text-2xl font-bold text-slate-100">Hi, {displayName}! 👋</h1>
+            <p className="text-slate-400">Welcome back to your dashboard</p>
           </div>
           <Button
             size="lg"

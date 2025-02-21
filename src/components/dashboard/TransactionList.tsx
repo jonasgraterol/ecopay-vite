@@ -5,7 +5,7 @@ import { format } from "date-fns"
 
 export function TransactionList() {
   const { data: transactionData, isLoading, error } = useTransactions({
-    $sort: { date: -1 },
+    $sort: { id: -1 },
     $limit: 10
   });
 
