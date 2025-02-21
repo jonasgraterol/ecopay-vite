@@ -5,7 +5,7 @@ import { authService } from '@/services/auth';
 interface RegisterData {
   email: string;
   password: string;
-  fullName?: string;
+  name?: string;
   phone?: string;
 }
 
@@ -48,7 +48,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAuthenticated(true);
       router.navigate({ to: '/dashboard' });
     } catch (error) {
-      console.error('Login error:', error);
+      // Only reset auth state if the token is invalid
+      if (error instanceof Error && error.message.includes('401')) {
+        localStorage.removeItem('feathers-jwt');
+        setUser(null);
+        setIsAuthenticated(false);
+      }
       throw error;
     }
   }, []);
@@ -58,9 +63,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await authService.signUp({
         email: data.email,
         password: data.password,
-        firstName: data.fullName?.split(' ')[0] || '',
-        lastName: data.fullName?.split(' ').slice(1).join(' ') || '',
-        phoneNumber: data.phone || '',
+        name: data.name || '',
+        phone: data.phone || '',
       });
       localStorage.setItem('feathers-jwt', response.accessToken);
       setUser(response.user);

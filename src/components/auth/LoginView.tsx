@@ -8,12 +8,46 @@ import { Link } from '@tanstack/react-router'
 
 export function LoginView() {
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    error: null as string | null,
+    isLoading: false
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(email, password);
+    
+    try {
+      setFormData(prev => ({ ...prev, isLoading: true, error: null }));
+      await login(formData.email, formData.password);
+    } catch (err) {
+      let errorMessage = 'An error occurred during sign in';
+      
+      if (err instanceof Error) {
+        if (err.response?.status === 401 || err.message.includes('401')) {
+          errorMessage = 'Invalid email or password';
+        } else {
+          errorMessage = err.message;
+        }
+      }
+      
+      setFormData(prev => ({
+        ...prev,
+        error: errorMessage,
+        isLoading: false
+      }));
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+      // Only clear error if user is typing
+      error: prev.error && value !== prev[name as keyof typeof prev] ? null : prev.error
+    }));
   };
 
   return (
@@ -39,9 +73,10 @@ export function LoginView() {
               <div className="space-y-2">
                 <Input
                   type="email"
+                  name="email"
                   placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={handleInputChange}
                   required
                   className="border-slate-800 bg-slate-950 text-slate-200 placeholder:text-slate-500"
                 />
@@ -49,25 +84,34 @@ export function LoginView() {
               <div className="space-y-2">
                 <Input
                   type="password"
+                  name="password"
                   placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={handleInputChange}
                   required
                   className="border-slate-800 bg-slate-950 text-slate-200 placeholder:text-slate-500"
                 />
               </div>
 
+              {formData.error && (
+                <div className="rounded-md bg-red-500/10 p-3 text-sm text-red-400">
+                  {formData.error}
+                </div>
+              )}
+
               <Button 
                 type="submit"
                 size="lg"
                 className="w-full"
+                disabled={formData.isLoading}
                 style={{
                   backgroundColor: '#00FFA3',
                   color: '#000',
                   fontWeight: 500,
+                  opacity: formData.isLoading ? 0.7 : 1,
                 }}
               >
-                Sign in
+                {formData.isLoading ? 'Signing in...' : 'Sign in'}
               </Button>
 
               <div className="text-center text-sm text-slate-400">

@@ -35,7 +35,7 @@ export function RegisterView() {
       await register({
         email,
         password,
-        fullName: fullName || undefined,
+        name: fullName || undefined,
         phone: phone || undefined
       });
     } catch (err) {

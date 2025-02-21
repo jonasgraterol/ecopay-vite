@@ -3,9 +3,8 @@ import { apiClient } from '@/lib/api-client';
 export interface SignUpData {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
+  name: string;
+  phone: string;
 }
 
 export interface SignInData {

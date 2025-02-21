@@ -29,8 +29,14 @@ apiClient.interceptors.response.use(
   (error) => {
     // Handle 401 Unauthorized errors
     if (error.response?.status === 401) {
-      localStorage.removeItem('feathers-jwt');
-      window.location.href = '/auth/login';
+      const isLoginPage = window.location.pathname === '/auth/login';
+      const isAuthPage = window.location.pathname.startsWith('/auth/');
+      
+      // Only remove token and redirect if we're not already on an auth page
+      if (!isAuthPage) {
+        localStorage.removeItem('feathers-jwt');
+        window.location.href = '/auth/login';
+      }
     }
     return Promise.reject(error);
   }
