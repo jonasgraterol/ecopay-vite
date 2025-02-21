@@ -57,10 +57,10 @@ export function TransactionList() {
             <tbody className="text-slate-200">
               {transactions.map((transaction: Transaction) => (
                 <tr key={transaction.id} className="border-t border-slate-800">
-                  <td className="py-4">{format(new Date(transaction.date), 'M/d/yyyy')}</td>
-                  <td>{transaction.type}</td>
-                  <td className="text-right">{transaction.amount.toFixed(2)}</td>
-                  <td className="text-right">{transaction.usdt.toFixed(2)}</td>
+                  <td className="py-4">{format(new Date(transaction.createdAt), 'dd/MM/yyyy')}</td>
+                  <td>{transaction.currency}</td>
+                  <td className="text-right">{Number(transaction.amount).toFixed(2)}</td>
+                  <td className="text-right">{Number(transaction.cryptoAmount).toFixed(2)}</td>
                   <td className="text-right">
                     <span className={`inline-block rounded-full px-3 py-1 text-sm ${
                       transaction.status === 'Completed'

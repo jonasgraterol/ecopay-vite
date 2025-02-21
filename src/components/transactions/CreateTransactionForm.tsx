@@ -1,10 +1,16 @@
-import { DollarSign, Shield, Timer, Wallet } from "lucide-react"
+import { CreditCard, DollarSign, Shield, Timer, Wallet } from "lucide-react"
+import { useAuth } from "@/lib/auth/auth-context"
+import { usePaymentMethods } from "@/hooks/use-payment-methods"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ReactNode, useState } from "react"
+import { useCreateTransaction } from "@/hooks/use-transactions"
+import { toast } from "sonner"
+import { PaymentMethod } from "@/services/payment-methods"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface CreateTransactionFormProps {
   description?: ReactNode
@@ -13,6 +19,7 @@ interface CreateTransactionFormProps {
     walletAddress: string
     amount: string
     currency: string
+    paymentMethodId: string
   }) => void
 }
 
@@ -21,18 +28,71 @@ export function CreateTransactionForm({
   showFeatures = true,
   onSubmit 
 }: CreateTransactionFormProps) {
+  const { user } = useAuth()
   const [currency, setCurrency] = useState('TTD')
+  const [paymentMethodId, setPaymentMethodId] = useState('')
+  const createTransaction = useCreateTransaction()
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { data: paymentMethods, isLoading: isLoadingPaymentMethods } = usePaymentMethods({
+    $sort: { id: -1 },
+    userId: user.id
+  })
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     
-    if (onSubmit) {
-      onSubmit({
-        walletAddress: formData.get('walletAddress') as string,
-        amount: formData.get('amount') as string,
-        currency: currency
+    try {
+      // Validate form data
+      const amount = Number(formData.get('amount'))
+      const walletAddress = formData.get('walletAddress') as string
+
+      if (!amount || amount <= 0) {
+        toast.error('Please enter a valid amount')
+        return
+      }
+
+      if (!walletAddress) {
+        toast.error('Please enter a wallet address')
+        return
+      }
+
+      if (!paymentMethodId) {
+        toast.error('Please select a payment method')
+        return
+      }
+
+      // Create transaction
+      const result = await createTransaction.mutateAsync({
+        amount,
+        userId: user.id,
+        paymentMethodId: Number(paymentMethodId),
+        walletAddress,
+        currency
       })
+
+      toast.success('Transaction created successfully')
+      
+      if (onSubmit) {
+        onSubmit({
+          walletAddress,
+          amount: amount.toString(),
+          currency,
+          paymentMethodId
+        })
+      }
+
+      // Reset form
+      e.currentTarget.reset()
+      setPaymentMethodId('')
+      setCurrency('TTD')
+
+    } catch (error: any) {
+      console.error('Error creating transaction:', error)
+      toast.error(
+        error?.response?.data?.message ||
+        'Failed to create transaction. Please try again.'
+      )
     }
   }
 
@@ -60,6 +120,52 @@ export function CreateTransactionForm({
                   placeholder="Enter your USDT wallet address"
                   required
                 />
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label className="text-slate-200">
+                Payment Method
+              </Label>
+              <div className="space-y-2">
+                {isLoadingPaymentMethods ? (
+                  <div className="text-sm text-slate-400">Loading payment methods...</div>
+                ) : !paymentMethods?.total ? (
+                  <div className="text-sm text-slate-400">No payment methods available</div>
+                ) : (
+                  <RadioGroup
+                    value={paymentMethodId}
+                    onValueChange={setPaymentMethodId}
+                    className="space-y-2"
+                  >
+                    {paymentMethods.data.map((method: PaymentMethod) => (
+                      <div
+                        key={method.id}
+                        className={`flex items-center justify-between rounded-lg border p-4 transition-colors ${paymentMethodId === method.id ? 'border-[#00FFA3] bg-[#00FFA3]/5' : 'border-slate-800 bg-slate-950'}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <RadioGroupItem
+                            value={method.id}
+                            id={method.id}
+                            className="border-slate-600 text-[#00FFA3]"
+                          />
+                          <div className="grid gap-1">
+                            <Label
+                              htmlFor={method.id}
+                              className="text-base font-medium text-slate-200"
+                            >
+                              {method.alias}
+                            </Label>
+                            <div className="text-sm text-slate-400">
+                              **** {method.cardNumber.slice(-4)}
+                            </div>
+                          </div>
+                        </div>
+                        <CreditCard className="h-4 w-4 text-slate-400" />
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
               </div>
             </div>
 
@@ -114,10 +220,16 @@ export function CreateTransactionForm({
                 backgroundColor: '#00FFA3',
                 color: '#000',
                 fontWeight: 500,
+                opacity: (!paymentMethodId || isLoadingPaymentMethods) ? 0.7 : 1
               }}
               className="w-full bg-emerald-500 text-white hover:bg-[#00FFA3]/90"
+              disabled={!paymentMethodId || isLoadingPaymentMethods || createTransaction.isPending}
             >
-              Create Transaction
+              {isLoadingPaymentMethods
+                ? 'Loading Payment Methods...'
+                : createTransaction.isPending
+                ? 'Creating Transaction...'
+                : 'Create Transaction'}
             </Button>
           </div>
         </form>

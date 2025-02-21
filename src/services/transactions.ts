@@ -2,12 +2,19 @@ import { apiClient } from '@/lib/api-client';
 
 export interface Transaction {
   id: string;
-  type: 'Buy' | 'Sell';
   amount: number;
   usdt: number;
-  status: 'Completed' | 'Pending';
-  date: string;
+  status: 'Completed' | 'Pending' | 'Cancelled';
+  currency: string;
   userId: number;
+  paymentMethodId: number;
+  walletAddress: string;
+  cryptoCurrency: string;
+  cryptoAmount: number;
+  blockchainTransactionId: number;
+  walletId: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TransactionQuery {

@@ -16,7 +16,7 @@ export function PaymentMethods() {
     $sort: { id: -1 },
     userId: user.id
   })
-  console.log({paymentMethods})
+
   const createPaymentMethod = useCreatePaymentMethod()
   const removePaymentMethod = useRemovePaymentMethod()
 
