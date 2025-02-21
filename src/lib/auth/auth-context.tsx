@@ -1,9 +1,17 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { router } from '../router';
 
+interface RegisterData {
+  email: string;
+  password: string;
+  fullName?: string;
+  phone?: string;
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => void;
 }
 
@@ -19,13 +27,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.navigate({ to: '/dashboard' });
   }, []);
 
+  const register = useCallback(async (data: RegisterData) => {
+    // TODO: Implement actual registration logic here
+    console.log('Registration attempt with data:', data);
+    // After successful registration, automatically log the user in
+    setIsAuthenticated(true);
+    router.navigate({ to: '/dashboard' });
+  }, []);
+
   const logout = useCallback(() => {
     setIsAuthenticated(false);
     router.navigate({ to: '/auth/login' });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
