@@ -13,13 +13,12 @@ export interface SignInData {
 }
 
 export interface AuthResponse {
-  accessToken: string;
+  accessToken?: string;
   user: {
     id: number;
     email: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
+    name: string;
+    phone: string;
   };
 }
 

@@ -43,7 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     try {
       const response = await authService.signIn({ email, password });
-      localStorage.setItem('feathers-jwt', response.accessToken);
+      if (response.accessToken) {
+        localStorage.setItem('feathers-jwt', response.accessToken);
+      }
       setUser(response.user);
       setIsAuthenticated(true);
       router.navigate({ to: '/dashboard' });
@@ -60,16 +62,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = useCallback(async (data: RegisterData) => {
     try {
-      const response = await authService.signUp({
+      const user = await authService.signUp({
         email: data.email,
         password: data.password,
         name: data.name || '',
         phone: data.phone || '',
       });
-      localStorage.setItem('feathers-jwt', response.accessToken);
-      setUser(response.user);
+      setUser(user);
       setIsAuthenticated(true);
-      router.navigate({ to: '/dashboard' });
+      login(data.email, data.password);
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
