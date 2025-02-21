@@ -15,7 +15,7 @@ function LandingPage() {
       <section className="w-full px-4 py-20">
         <div className="mb-20 text-center">
           <div className="mb-8 flex justify-center">
-            <Logo size="sm" />
+            <Logo size="lg" />
           </div>
           <h1 className="mb-6 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-4xl font-bold text-transparent sm:text-6xl">
             Buy USDT Instantly
