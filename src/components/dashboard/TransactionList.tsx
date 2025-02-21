@@ -3,41 +3,37 @@ import { ArrowDownIcon, ArrowUpIcon } from "lucide-react"
 
 interface Transaction {
   id: string
-  type: 'send' | 'receive'
+  type: 'Buy' | 'Sell'
   amount: number
-  currency: string
-  status: 'completed' | 'pending' | 'failed'
+  usdt: number
+  status: 'Completed' | 'Pending'
   date: string
-  description: string
 }
 
 const mockTransactions: Transaction[] = [
   {
     id: '1',
-    type: 'send',
-    amount: 1000,
-    currency: 'TTD',
-    status: 'completed',
-    date: '2024-02-20',
-    description: 'Payment to John Doe'
+    type: 'Buy',
+    amount: 1000.00,
+    usdt: 950.25,
+    status: 'Completed',
+    date: '2/19/2024'
   },
   {
     id: '2',
-    type: 'receive',
-    amount: 500,
-    currency: 'USDT',
-    status: 'completed',
-    date: '2024-02-19',
-    description: 'Payment from Jane Smith'
+    type: 'Buy',
+    amount: 500.00,
+    usdt: 475.50,
+    status: 'Pending',
+    date: '2/18/2024'
   },
   {
     id: '3',
-    type: 'send',
-    amount: 750,
-    currency: 'TTD',
-    status: 'pending',
-    description: 'Payment to Alice Johnson',
-    date: '2024-02-18'
+    type: 'Buy',
+    amount: 2000.00,
+    usdt: 1900.75,
+    status: 'Completed',
+    date: '2/17/2024'
   }
 ]
 
@@ -45,49 +41,41 @@ export function TransactionList() {
   return (
     <Card className="border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-slate-100">Recent Transactions</CardTitle>
-        <CardDescription className="text-slate-400">Your latest payment activity</CardDescription>
+        <CardTitle className="text-xl font-semibold text-slate-100">Transaction History</CardTitle>
+        <CardDescription className="text-slate-400">Your recent transactions</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {mockTransactions.map((transaction) => (
-            <div
-              key={transaction.id}
-              className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-950 p-4"
-            >
-              <div className="flex items-center gap-4">
-                <div className={`rounded-full p-2 ${
-                  transaction.type === 'receive' 
-                    ? 'bg-emerald-500/10 text-[#00FFA3]' 
-                    : 'bg-red-500/10 text-red-400'
-                }`}>
-                  {transaction.type === 'receive' ? <ArrowDownIcon /> : <ArrowUpIcon />}
-                </div>
-                <div>
-                  <p className="font-medium text-slate-200">{transaction.description}</p>
-                  <p className="text-sm text-slate-400">{transaction.date}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className={`font-medium ${
-                  transaction.type === 'receive' 
-                    ? 'text-[#00FFA3]' 
-                    : 'text-red-400'
-                }`}>
-                  {transaction.type === 'receive' ? '+' : '-'} {transaction.amount} {transaction.currency}
-                </p>
-                <p className={`text-sm ${
-                  transaction.status === 'completed' 
-                    ? 'text-[#00FFA3]' 
-                    : transaction.status === 'pending' 
-                    ? 'text-yellow-400' 
-                    : 'text-red-400'
-                }`}>
-                  {transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
-                </p>
-              </div>
-            </div>
-          ))}
+        <div className="relative overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="text-sm text-slate-400">
+              <tr>
+                <th className="pb-4">Date</th>
+                <th className="pb-4">Type</th>
+                <th className="pb-4 text-right">Amount (TTC)</th>
+                <th className="pb-4 text-right">USDT</th>
+                <th className="pb-4 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody className="text-slate-200">
+              {mockTransactions.map((transaction) => (
+                <tr key={transaction.id} className="border-t border-slate-800">
+                  <td className="py-4">{transaction.date}</td>
+                  <td>{transaction.type}</td>
+                  <td className="text-right">{transaction.amount.toFixed(2)}</td>
+                  <td className="text-right">{transaction.usdt.toFixed(2)}</td>
+                  <td className="text-right">
+                    <span className={`inline-block rounded-full px-3 py-1 text-sm ${
+                      transaction.status === 'Completed'
+                        ? 'bg-emerald-500/20 text-emerald-400'
+                        : 'bg-yellow-500/20 text-yellow-400'
+                    }`}>
+                      {transaction.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </CardContent>
     </Card>
