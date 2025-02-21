@@ -1,6 +1,9 @@
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CreditCard, Plus, Trash2 } from "lucide-react"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
+import { AddPaymentMethodForm } from "@/components/payment-methods/AddPaymentMethodForm"
 
 interface PaymentMethod {
   id: string
@@ -28,6 +31,19 @@ const mockPaymentMethods: PaymentMethod[] = [
 ]
 
 export function PaymentMethods() {
+  const [open, setOpen] = useState(false)
+
+  const handleSubmit = (data: {
+    alias: string
+    cardNumber: string
+    cardholderName: string
+    expirationDate: string
+    securityNumber: string
+  }) => {
+    console.log('Payment method data:', data)
+    // TODO: Handle payment method submission
+    setOpen(false)
+  }
   return (
     <Card className="border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -35,18 +51,30 @@ export function PaymentMethods() {
           <CardTitle className="text-xl font-semibold text-slate-100">Payment Methods</CardTitle>
           <CardDescription className="text-slate-400">Manage your payment methods</CardDescription>
         </div>
-        <Button
-          size="sm"
-          style={{
-            backgroundColor: '#00FFA3',
-            color: '#000',
-            fontWeight: 500,
-          }}
-          className="hover:bg-[#00FFA3]/90"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add New
-        </Button>
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>
+            <Button
+              size="sm"
+              style={{
+                backgroundColor: '#00FFA3',
+                color: '#000',
+                fontWeight: 500,
+              }}
+              className="hover:bg-[#00FFA3]/90"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Add New
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent className="border-slate-800 bg-slate-900">
+            <DrawerHeader>
+              <DrawerTitle className="text-slate-100">Add Payment Method</DrawerTitle>
+            </DrawerHeader>
+            <div className="px-4 pb-4">
+              <AddPaymentMethodForm onSubmit={handleSubmit} />
+            </div>
+          </DrawerContent>
+        </Drawer>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
