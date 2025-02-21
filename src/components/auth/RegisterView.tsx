@@ -13,20 +13,36 @@ export function RegisterView() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
     if (password !== confirmPassword) {
-      // TODO: Add proper error handling
-      alert('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
-    await register({
-      email,
-      password,
-      fullName: fullName || undefined,
-      phone: phone || undefined
-    });
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await register({
+        email,
+        password,
+        fullName: fullName || undefined,
+        phone: phone || undefined
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred during registration');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -98,17 +114,25 @@ export function RegisterView() {
                 />
               </div>
 
+              {error && (
+                <div className="rounded-md bg-red-500/10 p-3 text-sm text-red-400">
+                  {error}
+                </div>
+              )}
+
               <Button 
                 type="submit"
                 size="lg"
                 className="w-full"
+                disabled={isLoading}
                 style={{
                   backgroundColor: '#00FFA3',
                   color: '#000',
                   fontWeight: 500,
+                  opacity: isLoading ? 0.7 : 1,
                 }}
               >
-                Create Account
+                {isLoading ? 'Creating Account...' : 'Create Account'}
               </Button>
 
               <div className="text-center text-sm text-slate-400">

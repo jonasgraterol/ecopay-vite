@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react';
 import { router } from '../router';
+import { authService } from '@/services/auth';
 
 interface RegisterData {
   email: string;
@@ -10,6 +11,7 @@ interface RegisterData {
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  user: any | null;
   login: (email: string, password: string) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => void;
@@ -19,29 +21,66 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<any | null>(null);
+
+  // Check for existing authentication on mount
+  useEffect(() => {
+    const token = localStorage.getItem('feathers-jwt');
+    if (token) {
+      authService.getCurrentUser()
+        .then(user => {
+          setUser(user);
+          setIsAuthenticated(true);
+        })
+        .catch(() => {
+          localStorage.removeItem('feathers-jwt');
+          setIsAuthenticated(false);
+          setUser(null);
+        });
+    }
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    // TODO: Implement actual authentication logic here
-    console.log('Login attempt with email:', email, 'and password:', password);
-    setIsAuthenticated(true);
-    router.navigate({ to: '/dashboard' });
+    try {
+      const response = await authService.signIn({ email, password });
+      localStorage.setItem('feathers-jwt', response.accessToken);
+      setUser(response.user);
+      setIsAuthenticated(true);
+      router.navigate({ to: '/dashboard' });
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   }, []);
 
   const register = useCallback(async (data: RegisterData) => {
-    // TODO: Implement actual registration logic here
-    console.log('Registration attempt with data:', data);
-    // After successful registration, automatically log the user in
-    setIsAuthenticated(true);
-    router.navigate({ to: '/dashboard' });
+    try {
+      const response = await authService.signUp({
+        email: data.email,
+        password: data.password,
+        firstName: data.fullName?.split(' ')[0] || '',
+        lastName: data.fullName?.split(' ').slice(1).join(' ') || '',
+        phoneNumber: data.phone || '',
+      });
+      localStorage.setItem('feathers-jwt', response.accessToken);
+      setUser(response.user);
+      setIsAuthenticated(true);
+      router.navigate({ to: '/dashboard' });
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
+    }
   }, []);
 
   const logout = useCallback(() => {
+    localStorage.removeItem('feathers-jwt');
     setIsAuthenticated(false);
+    setUser(null);
     router.navigate({ to: '/auth/login' });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, register, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
