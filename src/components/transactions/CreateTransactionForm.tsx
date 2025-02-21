@@ -88,7 +88,7 @@ export function CreateTransactionForm({
                   />
                 </div>
                 <div className="flex items-center rounded-md border border-slate-800 bg-slate-950 px-3 text-slate-200">
-                  TTC
+                  TTD
                 </div>
               </div>
               <p className="text-sm text-slate-400">You will receive USDT at the current market rate</p>
