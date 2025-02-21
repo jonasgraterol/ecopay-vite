@@ -16,6 +16,7 @@ export interface TransactionQuery {
   $sort?: {
     [key: string]: 1 | -1;
   };
+  userId?: number;
 }
 
 export const transactionsService = {

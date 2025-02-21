@@ -10,11 +10,13 @@ export function useSignUp() {
     mutationFn: (data: SignUpData) => authService.signUp(data),
     onSuccess: (response) => {
       // Store the JWT token
-      localStorage.setItem('feathers-jwt', response.accessToken);
-      
+      if (response.accessToken) {
+        localStorage.setItem('feathers-jwt', response.accessToken);
+      }
+
       // Update the cached user data
       queryClient.setQueryData(['currentUser'], response.user);
-      
+
       // Redirect to dashboard
       navigate({ to: '/dashboard' });
     },
@@ -29,11 +31,13 @@ export function useSignIn() {
     mutationFn: (data: SignInData) => authService.signIn(data),
     onSuccess: (response) => {
       // Store the JWT token
-      localStorage.setItem('feathers-jwt', response.accessToken);
-      
+      if (response.accessToken) {
+        localStorage.setItem('feathers-jwt', response.accessToken);
+      }
+
       // Update the cached user data
       queryClient.setQueryData(['currentUser'], response.user);
-      
+
       // Redirect to dashboard
       navigate({ to: '/dashboard' });
     },

@@ -2,11 +2,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useTransactions } from "@/hooks/use-transactions"
 import { Transaction } from "@/services/transactions";
 import { format } from "date-fns"
+import { useAuth } from '@/lib/auth/auth-context'
 
 export function TransactionList() {
+  const { user } = useAuth()
   const { data: transactionData, isLoading, error } = useTransactions({
     $sort: { id: -1 },
-    $limit: 10
+    $limit: 10,
+    userId: user.id
   });
 
   if (isLoading) {
