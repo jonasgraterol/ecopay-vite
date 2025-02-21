@@ -10,7 +10,7 @@ export interface AuthContext {
 export const Route = createRootRoute<AuthContext>({
   component: () => (
     <AuthProvider>
-      <div className="min-h-screen">
+      <div className="min-h-screen w-screen">
         <Outlet />
       </div>
     </AuthProvider>

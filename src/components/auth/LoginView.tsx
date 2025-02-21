@@ -1,5 +1,10 @@
-import { useState } from 'react';
-import { useAuth } from '../../lib/auth/auth-context';
+import { useState } from 'react'
+import { useAuth } from '@/lib/auth/auth-context'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Bitcoin } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 
 export function LoginView() {
   const { login } = useAuth();
@@ -12,46 +17,68 @@ export function LoginView() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <input
-                type="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+    <div className="min-h-screen w-full bg-gradient-to-b from-slate-950 to-black text-white">
+      <div className="container mx-auto px-4 py-20 flex flex-col items-center">
+        <Link to="/" className="mb-8">
+          <div className="rounded-full bg-emerald-500/10 p-4">
+            <Bitcoin className="h-8 w-8 text-[#00FFA3]" />
           </div>
+        </Link>
 
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Sign in
-            </button>
-          </div>
-        </form>
+        <Card className="w-full max-w-md border-slate-800 bg-slate-900/90 shadow-lg backdrop-blur">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-slate-100">
+              Sign in to your account
+            </CardTitle>
+            <CardDescription className="text-slate-400">
+              Enter your credentials to access your account
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Input
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="border-slate-800 bg-slate-950 text-slate-200 placeholder:text-slate-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="border-slate-800 bg-slate-950 text-slate-200 placeholder:text-slate-500"
+                />
+              </div>
+
+              <Button 
+                type="submit"
+                size="lg"
+                className="w-full"
+                style={{
+                  backgroundColor: '#00FFA3',
+                  color: '#000',
+                  fontWeight: 500,
+                }}
+              >
+                Sign in
+              </Button>
+
+              <div className="text-center text-sm text-slate-400">
+                Don't have an account?{' '}
+                <Link to="/auth/register" className="text-[#00FFA3] hover:text-[#00FFA3]/90">
+                  Create one
+                </Link>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
