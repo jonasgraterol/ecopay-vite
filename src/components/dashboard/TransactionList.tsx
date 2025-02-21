@@ -65,6 +65,7 @@ export function TransactionList() {
                     <span className={`inline-block rounded-full px-3 py-1 text-sm ${
                       transaction.status === 'Completed'
                         ? 'bg-emerald-500/20 text-emerald-400'
+                        : transaction.status === 'Cancelled' ? 'bg-red-500/20 text-red-400'
                         : 'bg-yellow-500/20 text-yellow-400'
                     }`}>
                       {transaction.status}
