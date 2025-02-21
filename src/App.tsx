@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import { Bitcoin, CreditCard, DollarSign, Shield, Timer, Wallet } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -10,8 +7,6 @@ import { Label } from "@/components/ui/label"
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black text-white">
     {/* Hero Section */}
