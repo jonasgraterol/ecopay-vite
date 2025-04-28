@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Shield, Timer, CreditCard, DollarSign } from "lucide-react"
 import { Logo } from "@/components/ui/logo"
-import { Link } from '@tanstack/react-router'
+// import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/')({
