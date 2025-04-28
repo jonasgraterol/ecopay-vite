@@ -24,7 +24,7 @@ function LandingPage() {
             Fast, secure, and easy way to purchase USDT using Fiat. Get started in minutes.
           </p>
           <div className="flex justify-center gap-4">
-            <Link to="/auth/login">
+            {/* <Link to="/auth/login">
               <Button 
                 size="lg"
                 style={{
@@ -36,7 +36,7 @@ function LandingPage() {
               >
                 Get Started
               </Button>
-            </Link>
+            </Link> */}
             <a href="#features">
               <Button 
                 size="lg"
@@ -87,7 +87,7 @@ function LandingPage() {
         <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
           Join thousands of users who trust our platform for their USDT purchases.
         </p>
-        <Link to="/auth/login">
+        {/* <Link to="/auth/login">
           <Button 
             size="lg"
             style={{
@@ -99,7 +99,7 @@ function LandingPage() {
           >
             Create Account
           </Button>
-        </Link>
+        </Link> */}
       </section>
     </div>
   )

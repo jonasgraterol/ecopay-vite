@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useAuth } from '@/lib/auth/auth-context'
 import { LogOut, Plus } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
@@ -10,6 +10,10 @@ import { Navigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/')({
   component: DashboardView,
+  beforeLoad: () => {
+    // Redirect to home page - dashboard is disabled
+    return redirect({ to: '/' })
+  }
 })
 
 function DashboardView() {
